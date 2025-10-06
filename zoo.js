@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // zoo.js - Central initialization for Zoo Management System
 import { initSecurity, verifySecureProtocol } from './Security.js';
 import { initializeMembershipForm, setupBookingForm} from './formsubmission.js';
@@ -195,73 +194,3 @@ if ("Notification" in window && Notification.permission !== "granted") {
     }
   });
 }
-=======
-// zoo.js - Central initialization for Zoo Management System
-import { initSecurity, verifySecureProtocol } from './Security.js';
-import { initializeMembershipForm, setupBookingForm, setupMembershipForm } from './formsubmission.js';
-import { populateAnimalDropdown, loadAnimals, displayAnimalData, animals } from './AnimalData.js';
-import { toggleZooStatus, updateVisitorCount, displayZooStatistics, toggleAnimalHealth, toggleAnimalStatus } from './ZooOperations.js';
-import { updateAdminDashboard } from './AdminDashboard.js';
-import { displayError, displaySuccess } from './UiFeedback.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('✅ Zoo Management System Loaded');
-
-  try {
-    // Security verification
-    if (!verifySecureProtocol()) return;
-
-    // Initialize CSRF tokens and security for forms
-    initSecurity();
-
-    // Load existing animals and populate dropdown
-    loadAnimals();
-    populateAnimalDropdown(animals);
-    displayAnimalData(animals);
-
-    // Setup form event listeners
-    initializeMembershipForm();
-    setupMembershipForm();
-    setupBookingForm();
-
-    // Admin dashboard real-time updates
-    updateAdminDashboard();
-
-    // Attach global functions for buttons
-    window.toggleZooStatus = () => {
-      const zooStatusElement = document.getElementById("zooStatus");
-      const currentStatus = zooStatusElement.textContent.includes('Open') ? 'Open' : 'Closed';
-      const updatedStatus = toggleZooStatus(currentStatus, animals);
-      displayAnimalData(updatedStatus.animals); // Refresh animal cards
-    };
-
-    // Attach individual toggle functions to window so buttons can access them
-window.toggleStatus = (id) => {
-  const updatedAnimals = toggleAnimalStatus(id, animals);
-  displayAnimalData(updatedAnimals);
-};
-
-window.updateHealth = (id) => {
-  const updatedAnimals = toggleAnimalHealth(id, animals);
-  displayAnimalData(updatedAnimals);
-};
-
-
-    window.displayZooStatistics = () => {
-      displayZooStatistics(animals);
-    };
-
-    window.updateVisitorCount = (count) => {
-      updateVisitorCount(count);
-    };
-
-    // Error and success messaging
-    window.displayError = displayError;
-    window.displaySuccess = displaySuccess;
-
-  } catch (error) {
-    console.error("Critical Error: Unable to initialize Zoo Management System.", error);
-    displayError("A serious error occurred. Please reload the page.");
-  }
-});
->>>>>>> 2468668 (added toggle to animal status and health)

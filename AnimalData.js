@@ -432,29 +432,48 @@ export const showLoading = (isLoading) => {
       console.error("Animal container element not found.");
       return;
     }
-    // Clear any previous content in the container.
-    container.innerHTML = "";
-    // Loop through the data and create a card for each animal.
+  
+    // Clear previous content safely
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
     data.forEach((animal) => {
       const card = document.createElement("div");
       card.classList.add("animal-card");
-      
-      // Create the title element with animal name and species.
-      const titleElement = document.createElement("h3");
-      titleElement.textContent = `${animal.name} (${animal.species})`;
-      card.appendChild(titleElement);
-      
-      // Create a paragraph for the animal's status.
-      const statusElement = document.createElement("p");
-      statusElement.textContent = `Status: ${animal.status}`;
-      card.appendChild(statusElement);
-      
-      // Create a paragraph for the animal's health.
-      const healthElement = document.createElement("p");
-      healthElement.textContent = `Health: ${animal.health}`;
-      card.appendChild(healthElement);
-      
-      // Append the card to the container.
+  
+      // Title: Name and Species
+      const title = document.createElement("h3");
+      title.textContent = `${animal.name} (${animal.species})`;
+      card.appendChild(title);
+  
+      // Status line
+      const status = document.createElement("p");
+      status.textContent = `Status: ${animal.status}`;
+      card.appendChild(status);
+  
+      // Health line
+      const health = document.createElement("p");
+      health.textContent = `Health: ${animal.health}`;
+      card.appendChild(health);
+  
+      // Toggle Status Button
+      const statusBtn = document.createElement("button");
+      statusBtn.textContent = "Toggle Status";
+      statusBtn.addEventListener("click", () => {
+        window.toggleStatus(animal.id);
+      });
+      card.appendChild(statusBtn);
+  
+      // Toggle Health Button
+      const healthBtn = document.createElement("button");
+      healthBtn.textContent = "Update Health";
+      healthBtn.addEventListener("click", () => {
+        window.updateHealth(animal.id);
+      });
+      card.appendChild(healthBtn);
+  
+      // Append card to container
       container.appendChild(card);
     });
   };

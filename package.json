@@ -1,29 +1,19 @@
 {
-  "name": "ntc_zoo",
+  "name": "cswd2-sprint-a2-zoo-vaj",
   "version": "1.0.0",
-  "main": "zoo.js",
+  "private": true,
+  "main": "server.js",
   "scripts": {
-<<<<<<< HEAD
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-=======
-    "test": "echo \"Error: no test specified\" && exit 1"
->>>>>>> 2468668 (added toggle to animal status and health)
+    "start": "node server.js",
+    "test": "echo \"No tests\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "eslint": "^9.20.0",
     "globals": "^15.14.0"
-<<<<<<< HEAD
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
-=======
->>>>>>> 2468668 (added toggle to animal status and health)
   }
 }
