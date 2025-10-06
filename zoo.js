@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.groupEnd();
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/Sprint-C3-Zoo/serviceworker.js')
+      navigator.serviceWorker.register('/serviceworker.js')
       .then(() => console.log("Service Worker registered"))
       .catch((err) => console.error("SW registration failed", err));
     }
