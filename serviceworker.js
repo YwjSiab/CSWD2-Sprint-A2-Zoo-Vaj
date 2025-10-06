@@ -3,13 +3,26 @@ const CACHE_NAME = "ntc-zoo-cache-v1";
 
 // List of essential files to pre-cache for offline use
 const FILES_TO_CACHE = [
-  "/Sprint-C3-Zoo/",
-  "/Sprint-C3-Zoo/index.html",
-  "/Sprint-C3-Zoo/zoo.js",
-  "/Sprint-C3-Zoo/manifest.json",
-  "/Sprint-C3-Zoo/icon-192.png",
-  "/Sprint-C3-Zoo/icon-512.png"
+  "/", 
+  "/index.html",
+  "/styles.css",
+  "/zoo.js",
+  "/AnimalAPI.js",
+  "/AnimalData.js",
+  "/AdminDashboard.js",
+  "/UiFeedback.js",
+  "/Security.js",
+  "/zooLocations.js",
+  "/ZooOperations.js",
+  "/Components/zoo-animal-card.js",
+  "/Components/z-hover-highlight.js",
+  "/Components/zoo-photo-booth.js",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/serviceworker.js"
 ];
+
 // Install event – cache app shell
 self.addEventListener("install", (evt) => {
   evt.waitUntil(
