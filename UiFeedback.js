@@ -107,7 +107,7 @@ export function displayError(message) {
       }
       // Append new success message
       const successElement = document.createElement("p");
-      successElement.style.color = "green";
+      successElement.style.color = "blue";
       successElement.textContent = `${message}`;
       successContainer.appendChild(successElement);
     } catch (err) {

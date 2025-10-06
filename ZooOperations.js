@@ -243,17 +243,37 @@ export const safelyUpdateElementText = (id, text) => {
    */
   export const toggleZooStatus = (currentZooStatus, animals) => {
     try {
-      const newStatus = (currentZooStatus === "Open") ? "Closed" : "Open";
-      const statusElement = document.getElementById("zooStatus");
-      if (!statusElement) throw new Error("Zoo status element not found.");
-      animals.forEach(animal => animal.status = newStatus);
-      statusElement.textContent = `Zoo Status: ${newStatus}`;
-      console.log(`Zoo status changed to: ${newStatus}`);
-      return { zooStatus: newStatus, animals };
-    } catch (error) {
-      console.error("Error toggling zoo status:", error.message);
-      return { zooStatus: currentZooStatus, animals };
-    }
+    const newStatus = (currentZooStatus === "Open") ? "Closed" : "Open";
+
+    // Flip header
+    const statusElement = document.getElementById("zooStatus");
+    if (statusElement) statusElement.textContent = `Zoo Status: ${newStatus}`;
+
+    // Flip data
+    animals.forEach(a => { a.status = newStatus; });
+
+    // ✅ Update legacy DOM cards (those created by displayAnimals)
+    animals.forEach(({ id }) => {
+      const span = document.getElementById(`status-${id}`);
+      if (span) span.textContent = newStatus;
+    });
+
+    // ✅ Update web component cards in place (if they’re present)
+    document.querySelectorAll("zoo-animal-card").forEach(card => {
+      const id = card.data?.id;
+      if (id == null) return;
+      const lbl = card.shadowRoot?.getElementById(`status-${id}`);
+      if (lbl) lbl.textContent = newStatus;
+      const latest = animals.find(x => String(x.id) === String(id));
+      if (latest) card.data = latest; // keep card’s data in sync
+    });
+
+    console.log(`Zoo status changed to: ${newStatus}`);
+    return { zooStatus: newStatus, animals };
+  } catch (error) {
+    console.error("Error toggling zoo status:", error.message);
+    return { zooStatus: currentZooStatus, animals };
+  }
   };
   
   /**
@@ -305,18 +325,28 @@ export const safelyUpdateElementText = (id, text) => {
     try {
       const animalDropdown = document.getElementById("animal");
       if (!animalDropdown) throw new Error("Animal dropdown not found. Check your HTML.");
+      
       console.log("Populating animal dropdown...");
-      animalDropdown.innerHTML = "";
+  
+      // Clear existing options safely
+      while (animalDropdown.firstChild) {
+        animalDropdown.removeChild(animalDropdown.firstChild);
+      }
+  
+      // Add default option
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
       defaultOption.textContent = "-- Select an Animal --";
       animalDropdown.appendChild(defaultOption);
+  
+      // Add animals
       animals.forEach(animal => {
         const option = document.createElement("option");
         option.value = animal.name;
         option.textContent = `${animal.name} (${animal.species})`;
         animalDropdown.appendChild(option);
       });
+  
       console.log("Dropdown populated successfully.");
     } catch (error) {
       console.error("Error populating animal dropdown:", error.message);

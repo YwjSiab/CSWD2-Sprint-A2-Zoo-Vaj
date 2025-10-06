@@ -89,7 +89,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
     <title>NTC Zoo</title>
+    <link rel="stylesheet" href="styles.css" />
     <script type="module" src="zoo.js" defer></script>
 </head>
 <body>
@@ -97,8 +101,10 @@
     <p>Open the console to see zoo information.</p>
     <h2 id="zooStatus">Zoo Status: Open</h2>
     <h2 id="visitorCounter">Visitors: 0</h2>
-<button onclick="toggleZooStatus()">Toggle Zoo Status</button>
-<button onclick="displayZooStatistics()">Update Zoo Stats</button> <!-- Sprint B1 Zoo Part 2 -->
+    <div class="top-controls">
+        <button onclick="toggleZooStatus()">Toggle Zoo Status</button>
+        <button onclick="displayZooStatistics()">Update Zoo Stats</button> <!-- Sprint B1 Zoo Part 2 -->
+    </div>
 
     <h2>Zoo Animals</h2>
     <div id="animalContainer"></div>
@@ -112,6 +118,14 @@
 
 <h2>Membership Registration</h2>
 <form id="membershipForm">
+    <zoo-photo-booth id="memberCamera"></zoo-photo-booth>
+
+    <!-- Hidden field so the photo travels with the form submit -->
+    <input type="hidden" id="memberPhotoDataUrl" name="memberPhotoDataUrl">
+
+    <!-- Optional: visible preview inside the page form -->
+    <img id="memberPhotoPreview" alt="Member photo preview" style="max-width:160px; display:none; border-radius:12px; margin-top:8px;">
+    
     <label for="name">Member Name:</label>
     <input type="text" id="name" required minlength="3" pattern="[A-Za-z ]+" title="Only letters and spaces allowed">
 

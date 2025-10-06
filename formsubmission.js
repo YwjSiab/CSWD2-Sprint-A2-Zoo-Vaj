@@ -301,6 +301,7 @@ export const sanitizeInput = (input) => {
       const membershipType = sanitizeInput(membershipTypeEl.value);
       const startDate = sanitizeInput(startDateEl.value);
       const emergencyContact = sanitizeInput(emergencyContactEl.value.trim());
+      const photoDataUrl = (document.getElementById("memberPhotoDataUrl")?.value || "").trim();
       
       // Validate input values.
       if (!name || !email || !membershipType || !startDate || !emergencyContact) {
@@ -309,7 +310,7 @@ export const sanitizeInput = (input) => {
       
       // Save membership data to localStorage.
       const members = JSON.parse(localStorage.getItem("members")) || [];
-      members.push({ name, email, membershipType, startDate, emergencyContact });
+      members.push({ name, email, membershipType, startDate, emergencyContact, photoDataUrl});
       localStorage.setItem("members", JSON.stringify(members));
       
       // Optionally use a global displaySuccess() function to show a success message.
@@ -326,6 +327,10 @@ export const sanitizeInput = (input) => {
       
       // Reset the membership form.
       event.target.reset();
+      const preview = document.getElementById("memberPhotoPreview");
+      if (preview) { preview.src = ""; preview.style.display = "none"; }
+      const hidden = document.getElementById("memberPhotoDataUrl");
+      if (hidden) hidden.value = "";
       
     } catch (error) {
       console.error("Error processing membership registration:", error.message);
