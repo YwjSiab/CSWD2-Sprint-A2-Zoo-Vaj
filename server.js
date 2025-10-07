@@ -32,6 +32,9 @@ app.get("/api/animals/:id", (req, res) => {
   });
 });
 
+// Health/warmup
+app.get("/ping", (_req, res) => res.json({ ok: true }));
+
 // Default route
 app.get("/", (req, res) => {
   res.send("Welcome to the NTC Zoo API 🦁");

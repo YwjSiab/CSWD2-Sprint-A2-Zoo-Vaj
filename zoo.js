@@ -10,8 +10,27 @@ import { exhibits, emergencyStations } from './zooLocations.js';
 import "./Components/zoo-animal-card.js";
 import "./Components/z-hover-highlight.js";
 import "./Components/zoo-photo-booth.js";
+import { ensureApiAwake, fetchAnimals } from "./AnimalAPI.js";
 
 let animals = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const statusEl = document.getElementById("zooStatus");
+  if (statusEl) statusEl.textContent = "Zoo Status: Warming up…";
+
+  try {
+    await ensureApiAwake();               // 🔥 wake Render instance
+    const data = await fetchAnimals();    // then fetch real data
+    window.animals = data;
+    populateAnimalDropdown(data);
+    renderAnimalCards();
+
+    if (statusEl) statusEl.textContent = "Zoo Status: Open";
+  } catch (err) {
+    console.error("Startup failed:", err);
+    if (statusEl) statusEl.textContent = "Zoo Status: Error (try refresh)";
+  }
+});
 
 const renderAnimalCards = () => {
   const container = document.getElementById("animalContainer");
