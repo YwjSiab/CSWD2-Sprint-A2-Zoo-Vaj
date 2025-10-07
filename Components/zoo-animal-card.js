@@ -65,7 +65,8 @@ render() {
             </a>
         </div>
     </z-hover-highlight>
-
+    <h3>${a.name} <small>(${a.species})</small></h3>
+    <img src="${imgSrc}" alt="${a.name}" onerror="this.src='/images/default.png'">
         <div class="row">Status: <b id="status-${a.id}">${a.status}</b></div>
         <div class="row">Health: <b id="health-${a.id}">${a.health}</b></div>
         <div class="row">
