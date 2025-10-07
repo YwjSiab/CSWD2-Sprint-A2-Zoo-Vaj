@@ -19,8 +19,7 @@ const FILES_TO_CACHE = [
   "/Components/zoo-photo-booth.js",
   "/manifest.json",
   "/icon-192.png",
-  "/icon-512.png",
-  "/serviceworker.js"
+  "/icon-512.png"
 ];
 
 // Install event – cache app shell
@@ -33,45 +32,56 @@ self.addEventListener("install", (evt) => {
 // Fetch event – serve from cache, then fallback to network
 self.addEventListener("fetch", (event) => {
   const req = event.request;
+
+  // Only handle GETs
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
 
-  // 🔒 Same-origin only
+  // Only same-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // 🚫 Bypass API + warmup endpoints (let browser hit network directly)
-  if (url.pathname.startsWith("/api/") || url.pathname === "/ping") {
-    return; // do not respondWith — no SW interception
-  }
+  // Bypass API and warmup endpoints; let them hit network directly
+  if (url.pathname.startsWith("/api/") || url.pathname === "/ping") return;
 
-  // 🧭 Navigations: network-first with cached fallback to app shell
-  if (req.mode === "navigate") {
+  // Handle SPA navigations: network-first with cached fallback to app shell
+  if (event.request.mode === "navigate") {
     event.respondWith((async () => {
       try {
         return await fetch(req); // live page if online
       } catch {
+        // fallback to cached shell if offline
         return (await caches.match("/index.html")) || Response.error();
       }
     })());
-    return;
+    return; // IMPORTANT: ensure we don't call respondWith again
   }
 
-  // 📦 Static assets: cache-first, then network (and cache good responses)
+  // Static assets: cache-first, then network; only cache "good" responses
   event.respondWith((async () => {
+    // Serve from cache if present
     const cached = await caches.match(req);
     if (cached) return cached;
 
     try {
       const resp = await fetch(req);
-      if (resp.ok) {
+
+      // Decide if this response is safe to cache
+      const isRange = req.headers.has("range");
+      const okToCache =
+        resp.status === 200 &&
+        resp.type === "basic" && // same-origin
+        !isRange;
+
+      if (okToCache) {
         const copy = resp.clone();
-        const cache = await caches.open("ntc-zoo-vaj-v1");
-        cache.put(req, copy);
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(req, copy);
       }
+
       return resp;
     } catch {
-      // No cached copy and network failed
+      // Offline fallback (optional)
       return new Response("Offline", { status: 503 });
     }
   })());
