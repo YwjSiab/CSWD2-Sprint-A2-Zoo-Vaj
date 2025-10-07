@@ -11,7 +11,7 @@
         { "date": "2025-04-28", "task": "Clean enclosure" },
         { "date": "2025-04-29", "task": "Check water level" }
       ],
-        "image": "images/ellie.png"
+        "image": "/images/ellie.png"
     },
     {
       "id": 2,
@@ -25,7 +25,7 @@
         { "date": "2025-04-28", "task": "Inspect fencing" },
         { "date": "2025-04-30", "task": "Apply treatment" }
       ],
-        "image": "images/tony.png"
+        "image": "/images/tony.png"
     },
     {
       "id": 3,
@@ -39,7 +39,7 @@
         { "date": "2025-04-27", "task": "Replace bamboo" },
         { "date": "2025-04-29", "task": "Sanitize habitat" }
       ],
-        "image": "images/panda.png"
+        "image": "/images/panda.png"
     },
     {
       "id": 4,
@@ -53,7 +53,7 @@
         { "date": "2025-04-28", "task": "Sharpen climbing logs" },
         { "date": "2025-04-30", "task": "Repair viewing glass" }
       ],
-        "image": "images/leo.png"
+        "image": "/images/leo.png"
     }
   ]
   

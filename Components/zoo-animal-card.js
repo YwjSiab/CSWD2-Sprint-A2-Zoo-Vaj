@@ -42,25 +42,32 @@ render() {
       return;
     }
 
+    const raw = a.image || "images/default.png";      // key must match your data
+    const imgSrc = raw.startsWith("/") ? raw : `/${raw}`;
+
     this.shadowRoot.innerHTML = `
-    <style>
-      :host{display:block;font-family:system-ui;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:8px}
-      h3{margin:.25rem 0;font-size:1.1rem}
-      img{display:block;width:220px;height:auto;border-radius:10px;margin:8px 0}
-      .row{margin:.25rem 0}
-      button{margin-right:8px;border:0;padding:.5rem .8rem;border-radius:8px;cursor:pointer;background:#10b981;color:#fff}
-      button.secondary{background:#3b82f6}
-    </style>
+        <style>
+        :host{display:block}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:8px 0}
+        h3{margin:.25rem 0 8px;font:600 16px/1.3 system-ui}
+        img{display:block;width:220px;height:auto;border-radius:10px;margin:8px 0}
+        .row{margin:.25rem 0}
+        button{margin-right:8px;border:0;padding:.5rem .8rem;border-radius:8px;cursor:pointer;background:#10b981;color:#fff}
+        button.secondary{background:#3b82f6}
+      </style>
 
-    <h3>${a.name} <small>(${a.species})</small></h3>
-    <img src="${imgSrc}" alt="${a.name}" onerror="this.src='/images/default.png'">
+      <article class="card">
+        <h3>${a.name} <small>(${a.species})</small></h3>
+        <img src="${imgSrc}" alt="${a.name}" onerror="this.src='/images/default.png'">
 
-    <div class="row">Status: <b id="status-${a.id}">${a.status}</b></div>
-    <div class="row">Health: <b id="health-${a.id}">${a.health}</b></div>
-    <div class="row">
-      <button id="toggleStatus">Toggle Status</button>
-      <button id="toggleHealth" class="secondary">Toggle Health</button>
-    </div>
+        <div class="row">Status: <b id="status-${a.id}">${a.status}</b></div>
+        <div class="row">Health: <b id="health-${a.id}">${a.health}</b></div>
+
+        <div class="row">
+          <button id="toggleStatus">Toggle Status</button>
+          <button id="toggleHealth" class="secondary">Toggle Health</button>
+        </div>
+      </article>
     `;
 
     const statusBtn = this.shadowRoot.getElementById("toggleStatus");
