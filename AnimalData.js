@@ -42,33 +42,33 @@ export const showLoading = (isLoading) => {
      * Fetches animal data from an external API using the Fetch API.
      * Includes loading states and proper error handling.
      */
-    async function fetchAnimalData() {
+    // async function fetchAnimalData() {
         // Replace with your actual API endpoint URL
-        const apiUrl = "animals.json";
-        showLoading(true);
-        try {
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            mode: "cors",         // This enables CORS for the request
-            credentials: "include" // Ensures cookies are sent if required
-          });
-          if (!response.ok) {
-            throw new Error(`Network error: ${response.status} ${response.statusText}`);
-          }
-          const data = await response.json();
-          showLoading(false);
-          animals = data;            // Save fetched data to your global array
-          saveAnimals();             // Optional, if you want it in localStorage
-          displayAnimals();          // ✅ This renders the toggle buttons + spans
-        } catch (error) {
-          showLoading(false);
-          console.error("Error fetching animal data:", error.message);
+       // const apiUrl = "animals.json";
+       // showLoading(true);
+      //  try {
+      //    const response = await fetch(apiUrl, {
+       //     method: "GET",
+       //     mode: "cors",         // This enables CORS for the request
+      //      credentials: "include" // Ensures cookies are sent if required
+      //    });
+       //   if (!response.ok) {
+      //      throw new Error(`Network error: ${response.status} ${response.statusText}`);
+    //      }
+      //    const data = await response.json();
+    //      showLoading(false);
+      //    animals = data;            // Save fetched data to your global array
+        //  saveAnimals();             // Optional, if you want it in localStorage
+        //  displayAnimals();          // ✅ This renders the toggle buttons + spans
+        //} catch (error) {
+         // showLoading(false);
+         // console.error("Error fetching animal data:", error.message);
           // Reuse your existing displayError function defined later in the file
-          displayError("Failed to load animal data. Please try again later.");
-        }
-      }
+         // displayError("Failed to load animal data. Please try again later.");
+       // }
+     // }
 
-      fetchAnimalData();
+     // fetchAnimalData();
   
   /**
    * Renders the animal data in the DOM.
