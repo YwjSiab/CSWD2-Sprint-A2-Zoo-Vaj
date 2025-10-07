@@ -206,12 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   wireAddAnimalForm((newAnimal) => {
-  // Option A: call your API to persist
-  // fetch("/api/animals", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(newAnimal) })
-  //   .then(res => res.ok ? res.json() : Promise.reject(res))
-  //   .then(saved => addAnimalToListAndRender(saved));
-
-  // Option B: local-only add (matches your current pattern)
   addAnimalToListAndRender(newAnimal);
 });
 });
