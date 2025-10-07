@@ -43,36 +43,24 @@ render() {
     }
 
     this.shadowRoot.innerHTML = `
-        <style>
-            :host{display:block;font-family:system-ui;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:8px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-            h3{margin:.25rem 0;font-size:1.1rem}
-            small{color:#6b7280}
-            .row{margin:.25rem 0}
-            a.name {
-                display:inline-block;            
-                padding:2px 6px;                 
-                text-decoration:none; color:#111;
-                border-radius:20px;
-            }
-    button{margin-right:8px;border:0;padding:.5rem .8rem;border-radius:8px;cursor:pointer;background:#10b981;color:white}
-    button.secondary{background:#3b82f6}
-  </style>
+    <style>
+      :host{display:block;font-family:system-ui;border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin:8px}
+      h3{margin:.25rem 0;font-size:1.1rem}
+      img{display:block;width:220px;height:auto;border-radius:10px;margin:8px 0}
+      .row{margin:.25rem 0}
+      button{margin-right:8px;border:0;padding:.5rem .8rem;border-radius:8px;cursor:pointer;background:#10b981;color:#fff}
+      button.secondary{background:#3b82f6}
+    </style>
 
-    <z-hover-highlight selector="a" exportparts="hl">
-        <div class="wrapper">
-            <a href="#animal-${a.id}">
-                ${a.name} <small>(${a.species})</small>
-            </a>
-        </div>
-    </z-hover-highlight>
     <h3>${a.name} <small>(${a.species})</small></h3>
     <img src="${imgSrc}" alt="${a.name}" onerror="this.src='/images/default.png'">
-        <div class="row">Status: <b id="status-${a.id}">${a.status}</b></div>
-        <div class="row">Health: <b id="health-${a.id}">${a.health}</b></div>
-        <div class="row">
-            <button id="toggleStatus">Toggle Status</button>
-            <button id="toggleHealth" class="secondary">Toggle Health</button>
-        </div>
+
+    <div class="row">Status: <b id="status-${a.id}">${a.status}</b></div>
+    <div class="row">Health: <b id="health-${a.id}">${a.health}</b></div>
+    <div class="row">
+      <button id="toggleStatus">Toggle Status</button>
+      <button id="toggleHealth" class="secondary">Toggle Health</button>
+    </div>
     `;
 
     const statusBtn = this.shadowRoot.getElementById("toggleStatus");
