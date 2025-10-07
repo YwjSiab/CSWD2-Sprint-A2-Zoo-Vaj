@@ -173,3 +173,113 @@ export const sanitizeInput = (input) => {
     }
     membershipForm.addEventListener("submit", handleMembershipSubmission);
   };  
+
+  // formsubmission.js
+// Regex-based validation and user feedback for Add Animal form
+
+const patterns = {
+  // 2–30 letters, spaces, apostrophes, and hyphens
+  name: /^[A-Za-z][A-Za-z' -]{1,29}$/,
+  // Allowed species (adjust if you add more)
+  species: /^(Elephant|Tiger|Panda|Lion)$/i,
+  // Open or Closed
+  status: /^(Open|Closed)$/i,
+  // Health states
+  health: /^(Healthy|Sick|Injured)$/i,
+  // image path like images/ellie.png/.jpg/.jpeg/.webp
+  image: /^images\/[a-z0-9_\-]+\.(png|jpg|jpeg|webp)$/i,
+  // Latitude: -90..90 with optional decimals
+  lat: /^(\+|-)?(?:90(?:\.0+)?|[0-8]?\d(?:\.\d+)?)$/,
+  // Longitude: -180..180 with optional decimals
+  lng: /^(\+|-)?(?:180(?:\.0+)?|1[0-7]\d(?:\.\d+)?|[0-9]?\d(?:\.\d+)?)$/
+};
+
+function setFeedback(input, ok, message = "") {
+  const msg = input.parentElement.querySelector(".msg");
+  input.classList.toggle("is-valid", ok);
+  input.classList.toggle("is-invalid", !ok);
+  if (msg) {
+    msg.textContent = message;
+    msg.classList.toggle("ok", ok);
+    msg.classList.toggle("err", !ok);
+  }
+}
+
+function validateField(id, pattern, friendlyName) {
+  const el = document.getElementById(id);
+  if (!el) return { ok: false, el: null, value: "" };
+  const value = el.value.trim();
+  const ok = pattern.test(value);
+  setFeedback(el, ok, ok ? `${friendlyName} looks good.` : `Please enter a valid ${friendlyName}.`);
+  return { ok, el, value };
+}
+
+export function wireAddAnimalForm(onValidSubmit) {
+  const form = document.getElementById("addAnimalForm");
+  if (!form) return;
+
+  const fields = [
+    { id: "animalName",   pattern: patterns.name,    label: "name" },
+    { id: "animalSpecies",pattern: patterns.species, label: "species (Elephant/Tiger/Panda/Lion)" },
+    { id: "animalStatus", pattern: patterns.status,  label: "status (Open/Closed)" },
+    { id: "animalHealth", pattern: patterns.health,  label: "health (Healthy/Sick/Injured)" },
+    { id: "animalImage",  pattern: patterns.image,   label: "image path (e.g., images/ellie.png)" },
+    { id: "animalLat",    pattern: patterns.lat,     label: "latitude (-90..90)" },
+    { id: "animalLng",    pattern: patterns.lng,     label: "longitude (-180..180)" }
+  ];
+
+  // Live validation on input
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (el) el.addEventListener("input", () => validateField(f.id, f.pattern, f.label));
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const results = fields.map(f => validateField(f.id, f.pattern, f.label));
+    const allGood = results.every(r => r.ok);
+
+    const errorBox   = document.getElementById("errorMessages");
+    const successBox = document.getElementById("successMessages");
+    if (errorBox) errorBox.textContent = "";
+    if (successBox) successBox.textContent = "";
+
+    if (!allGood) {
+      if (errorBox) errorBox.textContent = "Please correct the highlighted fields.";
+      return;
+    }
+
+    // Build the new animal object in the shape your app expects
+    // (match your existing properties)
+    const data = Object.fromEntries(results.map(r => {
+      return [r.el.id, r.value];
+    }));
+
+    const newAnimal = {
+      id: Date.now(), // or your own id logic
+      name: data.animalName,
+      species: capitalize(data.animalSpecies),
+      status: capitalize(data.animalStatus),
+      health: capitalize(data.animalHealth),
+      image: data.animalImage,
+      location: {
+        lat: parseFloat(data.animalLat),
+        lng: parseFloat(data.animalLng)
+      }
+    };
+
+    if (typeof onValidSubmit === "function") {
+      onValidSubmit(newAnimal); // let caller actually add/POST the animal
+    }
+
+    if (successBox) successBox.textContent = `✅ Added ${newAnimal.name} successfully.`;
+    form.reset();
+    // clear visuals after reset
+    results.forEach(r => setFeedback(r.el, true, ""));
+  });
+}
+
+function capitalize(s){
+  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s;
+}

@@ -81,5 +81,55 @@
 
     <button type="submit">Book Now</button>
 </form>
+
+<div id="errorMessages" style="color:red; font-weight:bold;"></div>
+<div id="successMessages" style="color:green; font-weight:bold;"></div>
+
+<form id="addAnimalForm" novalidate>
+  <div class="field">
+    <label for="animalName">Name</label>
+    <input id="animalName" type="text" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalSpecies">Species</label>
+    <input id="animalSpecies" type="text" placeholder="Elephant, Tiger, Panda, Lion" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalStatus">Status</label>
+    <input id="animalStatus" type="text" placeholder="Open or Closed" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalHealth">Health</label>
+    <input id="animalHealth" type="text" placeholder="Healthy, Sick, Injured" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalImage">Image</label>
+    <input id="animalImage" type="text" placeholder="images/ellie.png" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalLat">Latitude</label>
+    <input id="animalLat" type="text" placeholder="44.975" required />
+    <small class="msg"></small>
+  </div>
+
+  <div class="field">
+    <label for="animalLng">Longitude</label>
+    <input id="animalLng" type="text" placeholder="-93.263" required />
+    <small class="msg"></small>
+  </div>
+
+  <button type="submit">Add Animal</button>
+</form>
+
 </body>
 </html>

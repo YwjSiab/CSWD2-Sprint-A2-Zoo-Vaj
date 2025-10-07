@@ -10,6 +10,7 @@ import { exhibits, emergencyStations } from './zooLocations.js';
 import "./Components/zoo-animal-card.js";
 import "./Components/z-hover-highlight.js";
 import "./Components/zoo-photo-booth.js";
+import { wireAddAnimalForm } from "./formsubmission.js";
 
 let animals = [];
 
@@ -203,6 +204,16 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("Critical Error: Unable to initialize Zoo Management System.", error);
     displayError("A serious error occurred. Please reload the page.");
   }
+
+  wireAddAnimalForm((newAnimal) => {
+  // Option A: call your API to persist
+  // fetch("/api/animals", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(newAnimal) })
+  //   .then(res => res.ok ? res.json() : Promise.reject(res))
+  //   .then(saved => addAnimalToListAndRender(saved));
+
+  // Option B: local-only add (matches your current pattern)
+  addAnimalToListAndRender(newAnimal);
+});
 });
 
 if ("Notification" in window && Notification.permission !== "granted") {

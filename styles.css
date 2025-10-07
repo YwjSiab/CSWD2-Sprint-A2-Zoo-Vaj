@@ -149,7 +149,42 @@ zoo-animal-card::part(hl) {
   color: #fff;
   margin-left: 4px;
 }
-:host input[type="file"] { display: none; }
+:host input[type="file"] { 
+  display: none; 
+}
 
-:host .note { font-size: .9rem; color: #555; }
-:host .error { color: #b91c1c; font-weight: 600; margin-top: 6px; }
+:host .note { 
+  font-size: .9rem; 
+  color: #555; 
+}
+:host .error { 
+  color: #b91c1c; 
+  font-weight: 600; 
+  margin-top: 6px; 
+}
+
+.field { 
+  margin-bottom: .75rem; 
+}
+
+.field .msg { 
+  display:block; 
+  font-size:.85rem; 
+  margin-top:.25rem; 
+}
+
+.is-valid  { 
+  border:1px solid #2ea44f; 
+}
+
+.is-invalid { 
+  border:1px solid #d73a49; 
+}
+
+.msg.ok { 
+  color:#2ea44f; 
+}
+
+.msg.err { 
+  color:#d73a49; 
+}
