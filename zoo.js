@@ -2,7 +2,7 @@
 import { initSecurity, verifySecureProtocol } from './Security.js';
 import { initializeMembershipForm, setupBookingForm} from './formsubmission.js';
 import { populateAnimalDropdown } from './AnimalData.js';
-import { fetchAnimals } from './AnimalAPI.js';
+import { ensureApiAwake, fetchAnimals } from "./AnimalAPI.js";
 import { toggleZooStatus, updateVisitorCount, displayZooStatistics, toggleAnimalHealth, toggleAnimalStatus } from './ZooOperations.js';
 import { updateAdminDashboard } from './AdminDashboard.js';
 import { displayError, displaySuccess } from './UiFeedback.js';
@@ -10,7 +10,6 @@ import { exhibits, emergencyStations } from './zooLocations.js';
 import "./Components/zoo-animal-card.js";
 import "./Components/z-hover-highlight.js";
 import "./Components/zoo-photo-booth.js";
-import { ensureApiAwake, fetchAnimals } from "./AnimalAPI.js";
 
 let animals = [];
 
