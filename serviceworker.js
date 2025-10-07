@@ -31,30 +31,48 @@ self.addEventListener("install", (evt) => {
 });
 
 // Fetch event – serve from cache, then fallback to network
-self.addEventListener("fetch", (evt) => {
-  evt.respondWith(
-    caches.match(evt.request).then((cachedRes) => {
-      // Return cached response if found
-      if (cachedRes) return cachedRes;
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  if (req.method !== "GET") return;
 
-      // Otherwise fetch from the network
-      return fetch(evt.request).then((networkRes) => {
-        // Clone the response only once
-        const resClone = networkRes.clone();
+  const url = new URL(req.url);
 
-        // If the request is for an image, cache it dynamically
-        if (evt.request.destination === "image") {
-          caches.open("image-cache").then((cache) => {
-            cache.put(evt.request, resClone);
-          });
-        }
-        
-        // Return original response to page
-        return networkRes;
-      }).catch((err) => {
-        console.error("Fetch failed:", err);
-        return new Response("Offline and resource not cached", { status: 503 });
-      });
-    })
-  );
+  // 🔒 Same-origin only
+  if (url.origin !== self.location.origin) return;
+
+  // 🚫 Bypass API + warmup endpoints (let browser hit network directly)
+  if (url.pathname.startsWith("/api/") || url.pathname === "/ping") {
+    return; // do not respondWith — no SW interception
+  }
+
+  // 🧭 Navigations: network-first with cached fallback to app shell
+  if (req.mode === "navigate") {
+    event.respondWith((async () => {
+      try {
+        return await fetch(req); // live page if online
+      } catch {
+        return (await caches.match("/index.html")) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // 📦 Static assets: cache-first, then network (and cache good responses)
+  event.respondWith((async () => {
+    const cached = await caches.match(req);
+    if (cached) return cached;
+
+    try {
+      const resp = await fetch(req);
+      if (resp.ok) {
+        const copy = resp.clone();
+        const cache = await caches.open("ntc-zoo-vaj-v1");
+        cache.put(req, copy);
+      }
+      return resp;
+    } catch {
+      // No cached copy and network failed
+      return new Response("Offline", { status: 503 });
+    }
+  })());
 });
